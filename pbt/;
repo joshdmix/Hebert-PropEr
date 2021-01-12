@@ -1,0 +1,33 @@
+defmodule PbtTest do
+  use ExUnit.Case
+  use PropCheck
+
+  # Properties
+  property "description of whta the property does" do
+    forall instance_of_type <- type_generator() do
+      # property expression
+      boolean(instance_of_type)
+    end
+  end
+
+  property "finds biggest element" do
+    forall x <- non_empty(list(integer())) do
+      Pbt.biggest(x) == model_biggest(x)
+    end
+  end
+
+  # Helpers
+  def boolean(_) do
+    true
+  end
+
+  # Generators
+  def type_generator() do
+    term()
+  end
+
+  # Models
+  def model_biggest(list) do
+    List.last(Enum.sort(list))
+  end
+end
